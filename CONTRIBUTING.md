@@ -27,7 +27,7 @@ Use this format:
 ## Branching Strategy
 
 Work in branches per phase:
-- phase0-toy-app
+- phase0-security-app
 - phase1-dockerize
 - phase2-k8s-deploy
 - phase3-terraform
