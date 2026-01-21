@@ -44,3 +44,7 @@ This mirrors real-world frontend deployment patterns.
 ---
 
 ## Files Added in This Phase
+ app/frontend/
+- Dockerfile
+- .dockerignore
+- nginx.conf
