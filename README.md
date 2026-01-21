@@ -180,7 +180,7 @@ This repository tracks progress through each phase.
 
 | Phase | Description | Status |
 |------|------------|--------|
-| Phase 0 | Toy security app | ⬜ |
+| Phase 0 | Security flavored app | ⬜ |
 | Phase 1 | Docker containerization | ⬜ |
 | Phase 2 | Kubernetes deployment | ⬜ |
 | Phase 3 | Terraform infrastructure | ⬜ |
