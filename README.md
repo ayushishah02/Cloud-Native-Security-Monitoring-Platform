@@ -1,53 +1,46 @@
-# Phase 1 — Dockerization
+# Phase 1 — Dockerization (Completed)
 
-## Objective
+## Overview
 
-The goal of Phase 1 is to containerize the SecureWorks frontend application
-built in Phase 0 using Docker.
+In Phase 1, the SecureWorks frontend application created in Phase 0 was
+successfully containerized using Docker.
 
-This phase focuses on packaging the application into a portable,
-reproducible container image that can run consistently across environments.
+The goal of this phase was to package the application into a **portable,
+production-style container image** that can run consistently across environments,
+independent of local tooling.
 
----
-
-## What This Phase Covers
-
-- Scaffolding a runnable React frontend (Vite + TypeScript)
-- Integrating the SecureWorks UI
-- Creating a production-ready Dockerfile
-- Building and running the application as a container locally
-- Applying Docker best practices (small images, clear entrypoints)
+This phase establishes the foundation for Kubernetes deployment in Phase 2.
 
 ---
 
-## What This Phase Does NOT Cover
+## What Was Accomplished
 
-- Kubernetes deployments
-- Cloud infrastructure
-- Centralized logging pipelines
-- Alerting or dashboards
-
-These are intentionally handled in later phases.
-
----
-
-## Deliverables
-
-- Runnable frontend application
-- Dockerfile for the frontend
-- Docker build and run instructions
-- Containerized application accessible via browser
+- Containerized the SecureWorks frontend application
+- Used a **multi-stage Docker build** for efficiency and security
+- Built the frontend using Node.js inside Docker
+- Served the production build using **Nginx**
+- Verified the containerized application runs locally
+- Ensured clean repository hygiene (`.dockerignore`, no node_modules committed)
 
 ---
 
-## Success Criteria
+## Docker Design Choices
 
-- `docker build` completes successfully
-- `docker run` launches the application
-- SecureWorks UI is accessible from the container
+### Multi-Stage Build
+
+The Dockerfile uses two stages:
+
+1. **Build Stage (Node.js)**
+   - Installs dependencies
+   - Builds the frontend into static assets
+
+2. **Runtime Stage (Nginx)**
+   - Serves only the built static files
+   - No Node.js runtime included
+   - Smaller, more secure production image
+
+This mirrors real-world frontend deployment patterns.
 
 ---
 
-## Next Phase
-
-Phase 2 — Kubernetes Deployment
+## Files Added in This Phase
