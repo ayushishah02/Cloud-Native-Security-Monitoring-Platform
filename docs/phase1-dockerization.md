@@ -1,98 +1,50 @@
-\# Phase 1 — Dockerization
+# Phase 1 — Dockerization (Completed)
 
+## Overview
 
+In Phase 1, the SecureWorks frontend application created in Phase 0 was
+successfully containerized using Docker.
 
-\## Objective
+The goal of this phase was to package the application into a **portable,
+production-style container image** that can run consistently across environments,
+independent of local tooling.
 
-Containerize the Security-Flavored Application from Phase 0 using Docker so it can run consistently across environments.
-
-
-
-This phase focuses on:
-
-\- Creating a Dockerfile (and optionally docker-compose)
-
-\- Producing a reproducible local build/run workflow
-
-\- Preparing the app for Kubernetes in Phase 2
-
-
+This phase establishes the foundation for Kubernetes deployment in Phase 2.
 
 ---
 
+## What Was Accomplished
 
-
-\## Scope (What we will do)
-
-\- Add Dockerfile(s) for the application
-
-\- Add clear build/run instructions
-
-\- Validate the container runs locally
-
-\- Apply Docker best practices (small images, clear entrypoints)
-
-
+- Containerized the SecureWorks frontend application
+- Used a **multi-stage Docker build** for efficiency and security
+- Built the frontend using Node.js inside Docker
+- Served the production build using **Nginx**
+- Verified the containerized application runs locally
+- Ensured clean repository hygiene (`.dockerignore`, no node_modules committed)
 
 ---
 
+## Docker Design Choices
 
+### Multi-Stage Build
 
-\## Out of Scope (Not yet)
+The Dockerfile uses two stages:
 
-\- Kubernetes manifests
+1. **Build Stage (Node.js)**
+   - Installs dependencies
+   - Builds the frontend into static assets
 
-\- Terraform infrastructure
+2. **Runtime Stage (Nginx)**
+   - Serves only the built static files
+   - No Node.js runtime included
+   - Smaller, more secure production image
 
-\- Centralized log pipeline + dashboards
-
-\- Alerting rules
-
-
-
-These will be handled in later phases.
-
-
-
----
-
-
-
-\## Deliverables
-
-\- Dockerfile for the application
-
-\- (Optional) docker-compose for local runs
-
-\- Documented commands to build and run the container
-
-\- Notes on design choices (ports, base image, multi-stage builds)
-
-
+This mirrors real-world frontend deployment patterns.
 
 ---
 
-
-
-\## Success Criteria
-
-\- A user can run:
-
-&nbsp; - `docker build ...`
-
-&nbsp; - `docker run ...`
-
-&nbsp; and see the application running successfully.
-
-
-
----
-
-
-
-\## Next Phase
-
-Phase 2 — Kubernetes Deployment (running the containerized app in a cluster).
-
-
-
+## Files Added in This Phase
+ app/frontend/
+- Dockerfile
+- .dockerignore
+- nginx.conf
