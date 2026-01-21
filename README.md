@@ -63,7 +63,7 @@ This repository tracks progress through each phase.
 
 ---
 
-### 🔹 Phase 0 — Security-Flavored Toy Application
+### 🔹 Phase 0 — Security-Flavored Application
 
 **What is built:**
 - A simple web app (e.g., login page + API)
