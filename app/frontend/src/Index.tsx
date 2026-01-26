@@ -1,61 +1,126 @@
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Shield, ArrowRight } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
+import { useState } from "react";
 
 export default function Index() {
-  const navigate = useNavigate();
-  const { user } = useAuth();
+  const [isSignedIn, setIsSignedIn] = useState(false);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-4">
-      <Card className="w-full max-w-lg border-slate-700 bg-slate-800/50 backdrop-blur-sm">
-        <CardHeader className="space-y-4 text-center">
-          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-primary/10">
-            <Shield className="h-10 w-10 text-primary" />
-          </div>
-          <div>
-            <CardTitle className="text-3xl font-bold text-slate-100">SecureWorks</CardTitle>
-            <CardDescription className="mt-2 text-slate-400">
-              Enterprise Security Monitoring Demo
-            </CardDescription>
-          </div>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <p className="text-center text-slate-300">
-            Welcome to the SecureWorks Demo App — a simulated internal company login portal 
-            that generates realistic security event logs for monitoring.
-          </p>
-          
-          <div className="space-y-3">
-            <h3 className="text-sm font-semibold text-slate-200">Demo Credentials:</h3>
-            <div className="space-y-2 rounded-lg border border-slate-600 bg-slate-700/50 p-4">
-              <div className="flex justify-between text-sm">
-                <span className="text-slate-400">Standard User:</span>
-                <code className="text-slate-200">user@secureworks.demo</code>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-slate-400">Admin User:</span>
-                <code className="text-slate-200">admin@secureworks.demo</code>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-slate-400">Passwords:</span>
-                <code className="text-slate-200">Password123! / AdminPassword123!</code>
-              </div>
-            </div>
+    <div
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: 16,
+        background:
+          "linear-gradient(135deg, rgb(15,23,42), rgb(30,41,59), rgb(15,23,42))",
+        color: "#e2e8f0",
+        fontFamily:
+          'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"',
+      }}
+    >
+      <div
+        style={{
+          width: "100%",
+          maxWidth: 560,
+          borderRadius: 16,
+          border: "1px solid rgb(51,65,85)",
+          background: "rgba(30,41,59,0.55)",
+          backdropFilter: "blur(10px)",
+          padding: 24,
+        }}
+      >
+        <div style={{ textAlign: "center", marginBottom: 18 }}>
+          <div
+            style={{
+              margin: "0 auto 14px",
+              height: 80,
+              width: 80,
+              borderRadius: "999px",
+              background: "rgba(59,130,246,0.12)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: 34,
+            }}
+            aria-hidden="true"
+          >
+            🛡️
           </div>
 
-          <Button 
-            onClick={() => navigate(user ? '/dashboard' : '/login')}
-            className="w-full"
-            size="lg"
+          <h1 style={{ fontSize: 30, fontWeight: 800, margin: 0 }}>
+            SecureWorks
+          </h1>
+          <p style={{ marginTop: 8, color: "#94a3b8" }}>
+            Enterprise Security Monitoring Demo
+          </p>
+        </div>
+
+        <p style={{ textAlign: "center", color: "#cbd5e1", marginBottom: 18 }}>
+          Welcome to the SecureWorks Demo App — a simulated internal company login
+          portal that generates realistic security event logs for monitoring.
+        </p>
+
+        <div style={{ marginBottom: 18 }}>
+          <h3 style={{ fontSize: 13, fontWeight: 700, marginBottom: 10 }}>
+            Demo Credentials:
+          </h3>
+
+          <div
+            style={{
+              borderRadius: 12,
+              border: "1px solid rgb(71,85,105)",
+              background: "rgba(51,65,85,0.35)",
+              padding: 14,
+              display: "grid",
+              gap: 10,
+              fontSize: 13,
+            }}
           >
-            {user ? 'Go to Dashboard' : 'Sign In'}
-            <ArrowRight className="ml-2 h-4 w-4" />
-          </Button>
-        </CardContent>
-      </Card>
+            <Row label="Standard User:" value="user@secureworks.demo" />
+            <Row label="Admin User:" value="admin@secureworks.demo" />
+            <Row
+              label="Passwords:"
+              value="Password123! / AdminPassword123!"
+            />
+          </div>
+        </div>
+
+        <button
+          onClick={() => setIsSignedIn((v) => !v)}
+          style={{
+            width: "100%",
+            padding: "12px 14px",
+            borderRadius: 12,
+            border: "1px solid rgb(59,130,246)",
+            background: "rgb(59,130,246)",
+            color: "white",
+            fontWeight: 700,
+            cursor: "pointer",
+          }}
+        >
+          {isSignedIn ? "Go to Dashboard →" : "Sign In →"}
+        </button>
+
+        <p style={{ marginTop: 12, fontSize: 12, color: "#94a3b8" }}>
+          (UI-only for Phase 0/1. Auth + routing will come later.)
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function Row({ label, value }: { label: string; value: string }) {
+  return (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+        gap: 12,
+        alignItems: "center",
+      }}
+    >
+      <span style={{ color: "#94a3b8" }}>{label}</span>
+      <code style={{ color: "#e2e8f0" }}>{value}</code>
     </div>
   );
 }
