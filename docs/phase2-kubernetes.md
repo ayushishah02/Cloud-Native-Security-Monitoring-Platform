@@ -30,5 +30,3 @@ Deploy the Dockerized SecureWorks frontend onto a Kubernetes cluster using produ
 
 \- Application accessible via browser
 
-
-
