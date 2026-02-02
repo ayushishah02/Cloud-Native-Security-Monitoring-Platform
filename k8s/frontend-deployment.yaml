@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: secureworks-frontend
+  labels:
+    app: secureworks-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: secureworks-frontend
+  template:
+    metadata:
+      labels:
+        app: secureworks-frontend
+    spec:
+      containers:
+        - name: secureworks-frontend
+          image: secureworks-frontend:phase1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
