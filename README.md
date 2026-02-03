@@ -1,224 +1,86 @@
-# Cloud-Native Security Monitoring Platform (Docker • Kubernetes • Terraform)
+# Phase 2 — Kubernetes Deployment (Completed)
 
-## 📌 Project Overview
+## Overview
+In Phase 2, the SecureWorks frontend application was deployed onto a local Kubernetes cluster using Docker Desktop.
 
-This project builds a **small cloud-native security monitoring platform** that observes a web application, collects security-relevant events, and visualizes them in a dashboard — using modern DevSecOps tooling.
+This phase focused on running the previously containerized application in a **production-style Kubernetes environment**, validating pod lifecycle management, service exposure, and internal Kubernetes networking.
 
-The focus is **not** on building a complex application, but on **how the system is packaged, deployed, monitored, secured, and automated** using industry-standard technologies.
-
-**Core technologies used:**
-- **Docker** – Package each component into containers  
-- **Kubernetes** – Run, scale, and manage the platform reliably  
-- **Terraform** – Provision the cloud infrastructure using Infrastructure-as-Code  
-
-> One-line story:
-> **“I built a cloud-based security monitoring system for a web application using Docker, Kubernetes, and Terraform.”**
+The emphasis was on **deployment correctness and Kubernetes fundamentals**, not observability or security tooling yet.
 
 ---
 
-## 🎯 Project Goal
+## Phase 2 Objectives
+The goals of this phase were to:
 
-To design and deploy a **mini security monitoring system** that can:
-
-- Observe application behavior (logins, failures, errors)
-- Centralize security-relevant logs
-- Visualize activity via dashboards
-- Detect suspicious patterns (e.g., brute-force attempts)
-- Run in a modern, automated, cloud-ready environment
-
-This project mirrors how **real-world SecOps / DevSecOps teams** build and operate monitoring platforms at a smaller scale.
+- Deploy the Dockerized frontend using Kubernetes manifests
+- Manage the application using a Kubernetes Deployment
+- Run multiple replicas for availability
+- Expose the application externally using a Service
+- Validate service-to-pod routing using selectors and endpoints
+- Debug and resolve real-world Kubernetes configuration issues
 
 ---
 
-## 🧠 Use Case (Plain English)
+## What Was Implemented
 
-Imagine a company with a web application where users log in.
+### Kubernetes Deployment
+- Created a `Deployment` for the frontend application
+- Configured replica count for high availability
+- Enabled rolling updates for safe changes
+- Defined CPU and memory requests/limits
+- Added readiness and liveness HTTP probes
+- Verified automatic pod restarts on failure
 
-They want to:
-- Detect suspicious login behavior  
-- Monitor errors that may signal vulnerabilities  
-- Centralize logs instead of checking servers manually  
-- View security trends visually  
-- Trigger alerts when something looks wrong  
+### Kubernetes Service
+- Created a `NodePort` Service for external access
+- Correctly mapped Service port `80` → container port `8080`
+- Used label selectors to route traffic to Pods
+- Validated dynamic endpoint population
 
-This project is a **mini version of a SIEM / security monitoring solution**:
-
-**Collect → Store → Visualize → Alert**
-
----
-
-## 🏗️ Architecture (High Level)
-
-The platform consists of:
-
-- A **simple web application** that generates security events  
-- A **log collection pipeline**  
-- A **central log storage/search backend**  
-- A **dashboard** for visualization  
-- **Containerized services** orchestrated by Kubernetes  
-- **Cloud infrastructure** provisioned via Terraform  
+### Networking & Validation
+- Verified Pod scheduling and node placement
+- Confirmed Pods received cluster IPs
+- Validated Service endpoints matched running Pods
+- Confirmed external access via `http://localhost:30080`
 
 ---
 
-## 🛠️ Project Phases & Timeline
+## Files Added / Modified in This Phase
 
-This repository tracks progress through each phase.
+k8s/frontend-deployment.yaml
+k8s/frontend-service.yaml
+app/frontend/Dockerfile
+app/frontend/nginx.conf
 
----
 
-### 🔹 Phase 0 — Security-Flavored Application
-
-**What is built:**
-- A simple web app (e.g., login page + API)
-- Logs:
-  - Successful logins
-  - Failed logins
-  - Repeated attempts (simulated suspicious behavior)
-
-**Why it matters:**
-- Generates realistic security events
-- Simulates a real company web portal
-- Provides data to monitor and detect threats
-
-**Status:** ✔️ Completed 
+These changes ensured the container image and Kubernetes configuration were fully aligned.
 
 ---
 
-### 🔹 Phase 1 — Docker: Containerizing the Platform
+## Validation & Verification
+Deployment correctness was verified using Kubernetes-native inspection commands:
 
-**What is containerized:**
-- Web application
-- Log collector/shipper
-- Log storage/search backend
-- Visualization/dashboard service
+- `kubectl get deploy`
+- `kubectl get pods -o wide`
+- `kubectl get svc`
+- `kubectl get endpoints`
+- `kubectl describe deploy`
 
-**Key ideas:**
-- Each component runs in its own container
-- Containers bundle code + dependencies
-- Portable, repeatable deployments
-
-**What this demonstrates:**
-- Component-based architecture
-- Real-world containerization practices
-
-**Status:** ✔️ Completed 
+Successful validation showed:
+- Pods in `Running` state (`READY 1/1`)
+- Deployment available with desired replicas
+- Service correctly routing traffic to Pods
+- Application accessible externally
 
 ---
 
-### 🔹 Phase 2 — Kubernetes: Running It Like Production
+## Outcome
+At the end of Phase 2, the SecureWorks frontend application is:
 
-**What Kubernetes handles:**
-- Deploying and managing containers
-- Restarting failed services
-- Scaling components
-- Service-to-service communication
-- Traffic routing
+- Running as replicated Pods in Kubernetes
+- Managed by a Deployment with rolling updates
+- Exposed externally via a NodePort Service
+- Correctly wired through Kubernetes networking
+- Ready for infrastructure automation and security tooling
 
-**Security-focused concepts introduced:**
-- Separating public vs internal services
-- Using Kubernetes Secrets for sensitive values
-- Basic network isolation between components
-
-**What this demonstrates:**
-- Operating a multi-service platform
-- Production-style deployment patterns
-- Foundational Kubernetes security awareness
-
-**Status:** ⬜ Not Started
-
----
-
-### 🔹 Phase 3 — Terraform: Infrastructure-as-Code
-
-**What Terraform provisions:**
-- Cloud virtual network
-- Kubernetes cluster
-- Storage for logs
-- Access and security rules
-
-**Key ideas:**
-- No manual cloud console setup
-- Entire environment defined as code
-- Easy to recreate, audit, and version
-
-**Why this matters:**
-- Critical for security, compliance, and scalability
-- Industry standard for cloud infrastructure
-
-**What this demonstrates:**
-- Infrastructure-as-Code skills
-- Cloud-native security mindset
-
-**Status:** ⬜ Not Started
-
----
-
-### 🔹 Phase 4 — Security & Observability (SecOps Focus)
-
-**Security capabilities added:**
-- Centralized log ingestion
-- Dashboards showing:
-  - Failed login attempts
-  - Top offending IPs
-  - Error spikes
-- Alerting rules (example):
-  - Too many failed logins from one IP in X minutes
-
-**Optional enhancements:**
-- Container image vulnerability scanning
-- TLS/HTTPS for services
-- Role-based access control
-- Least-privilege access patterns
-
-**What this demonstrates:**
-- Security operations thinking
-- Detection & monitoring fundamentals
-- Cloud-native observability skills
-
-**Status:** ⬜ Not Started
-
----
-
-## 📊 Progress Tracking
-
-| Phase | Description | Status |
-|------|------------|--------|
-| Phase 0 | Security app | ✔️ |
-| Phase 1 | Docker containerization | ✔️ |
-| Phase 2 | Kubernetes deployment | ⬜ |
-| Phase 3 | Terraform infrastructure | ⬜ |
-| Phase 4 | Security & observability | ⬜ |
-
----
-
-## 🎓 Skills Demonstrated
-
-- Docker & containerization
-- Kubernetes orchestration
-- Terraform & Infrastructure-as-Code
-- Cloud-native security concepts
-- Log aggregation & monitoring
-- Security event detection
-- DevSecOps mindset
-
----
-
-## 🚀 Why This Project Matters
-
-This repository demonstrates **how modern security platforms are built and operated**, not just how applications are coded.
-
-It shows:
-- Real-world tooling
-- Production-style architecture
-- Security thinking embedded from the start
-- Clear progression from local development → cloud deployment
-
----
-
-## 📌 Status
-
-🟡 **Project in progress**  
-This README will be updated as each phase is completed.
-
----
-
+**Phase 2 Status:** ✅ Completed
