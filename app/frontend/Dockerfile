@@ -1,22 +1,20 @@
-# ---- Build stage ----
-FROM node:24-alpine AS build
+# --- Build stage ---
+FROM node:20-alpine AS build
 WORKDIR /app
 
-# Install dependencies
 COPY package*.json ./
 RUN npm ci
 
-# Copy source and build
 COPY . .
 RUN npm run build
 
-# ---- Runtime stage ----
-FROM nginx:1.27-alpine
+# --- Runtime stage (unprivileged nginx) ---
+FROM nginxinc/nginx-unprivileged:1.27-alpine
 
-# SPA routing config
+# Copy our nginx config (overwrites default.conf)
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Copy build output
+# Copy built static site
 COPY --from=build /app/dist /usr/share/nginx/html
 
-EXPOSE 80
+EXPOSE 8080
