@@ -2,10 +2,12 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: secureworks-frontend
+  namespace: secureworks
   labels:
     app: secureworks-frontend
+    tier: frontend
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: secureworks-frontend
@@ -13,10 +15,39 @@ spec:
     metadata:
       labels:
         app: secureworks-frontend
+        tier: frontend
     spec:
       containers:
-        - name: secureworks-frontend
+        - name: frontend
           image: secureworks-frontend:phase1
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80
+
+          # Resource controls (production hygiene)
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+
+          # Probes (operational readiness)
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 2
+            failureThreshold: 3
+
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            timeoutSeconds: 2
+            failureThreshold: 3
