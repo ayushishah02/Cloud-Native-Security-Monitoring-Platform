@@ -10,10 +10,6 @@ The focus is **not** on building a complex application, but on **how the system 
 - **Docker** – Package each component into containers  
 - **Kubernetes** – Run, scale, and manage the platform reliably  
 - **Terraform** – Provision the cloud infrastructure using Infrastructure-as-Code  
-
-> One-line story:
-> **“I built a cloud-based security monitoring system for a web application using Docker, Kubernetes, and Terraform.”**
-
 ---
 
 ## 🎯 Project Goal
