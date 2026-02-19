@@ -145,7 +145,7 @@ This repository tracks progress through each phase.
 - Infrastructure-as-Code skills
 - Cloud-native security mindset
 
-**Status:** ⬜ Not Started
+**Status:** 🟡 In Progress
 
 ---
 
