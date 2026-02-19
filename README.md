@@ -26,7 +26,7 @@ This project mirrors how **real-world SecOps / DevSecOps teams** build and opera
 
 ---
 
-## 🧠 Use Case (Plain English)
+## 🧠 Use Case
 
 Imagine a company with a web application where users log in.
 
