@@ -10,10 +10,6 @@ The focus is **not** on building a complex application, but on **how the system 
 - **Docker** – Package each component into containers  
 - **Kubernetes** – Run, scale, and manage the platform reliably  
 - **Terraform** – Provision the cloud infrastructure using Infrastructure-as-Code  
-
-> One-line story:
-> **“I built a cloud-based security monitoring system for a web application using Docker, Kubernetes, and Terraform.”**
-
 ---
 
 ## 🎯 Project Goal
@@ -30,7 +26,7 @@ This project mirrors how **real-world SecOps / DevSecOps teams** build and opera
 
 ---
 
-## 🧠 Use Case (Plain English)
+## 🧠 Use Case
 
 Imagine a company with a web application where users log in.
 
@@ -149,7 +145,7 @@ This repository tracks progress through each phase.
 - Infrastructure-as-Code skills
 - Cloud-native security mindset
 
-**Status:** ⬜ Not Started
+**Status:** 🟡 In Progress
 
 ---
 
@@ -186,7 +182,7 @@ This repository tracks progress through each phase.
 | Phase 0 | Security app | ✔️ |
 | Phase 1 | Docker containerization | ✔️ |
 | Phase 2 | Kubernetes deployment | ✔️ |
-| Phase 3 | Terraform infrastructure | ⬜ |
+| Phase 3 | Terraform infrastructure | 🟡 |
 | Phase 4 | Security & observability | ⬜ |
 
 ---
