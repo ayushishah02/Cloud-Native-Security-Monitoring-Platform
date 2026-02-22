@@ -70,3 +70,93 @@ Deployment image reference:
 
 ```yaml
 image: 280934867410.dkr.ecr.us-east-1.amazonaws.com/secureworks-frontend:phase3
+
+---
+## ⚙️ Deployment Steps
+
+### 1️⃣ Provision Infrastructure
+
+From:
+
+`terraform/phase3/infra`
+
+Run:
+
+```bash
+terraform init
+
+terraform plan \
+  -var="allowed_ssh_cidr=<YOUR_PUBLIC_IP>/32" \
+  -var="public_key_path=C:/Users/<user>/.ssh/id_ed25519_phase3.pub"
+
+terraform apply
+```
+
+Outputs:
+
+- `ec2_public_ip`
+- `ssh_hint`
+
+---
+
+### 2️⃣ Verify K3s
+
+SSH into the instance:
+
+```bash
+ssh -i <private_key> ubuntu@<EC2_PUBLIC_IP>
+```
+
+Check cluster:
+
+```bash
+sudo k3s kubectl get nodes
+sudo k3s kubectl get pods -A
+```
+
+---
+
+### 3️⃣ Deploy Application
+
+Copy manifests:
+
+```bash
+scp -i <private_key> -r k8s ubuntu@<EC2_PUBLIC_IP>:~/cnsm/
+```
+
+Apply:
+
+```bash
+cd ~/cnsm/k8s
+
+sudo k3s kubectl apply -f namespace.yaml
+sudo k3s kubectl apply -f frontend-deployment.yaml
+sudo k3s kubectl apply -f frontend-service.yaml
+```
+
+Verify:
+
+```bash
+sudo k3s kubectl -n secureworks get deploy,svc,pods
+```
+
+---
+
+## 🌐 Access the Application
+
+Open in browser:
+
+`http://<EC2_PUBLIC_IP>:30080`
+
+Health check:
+
+```bash
+curl -I http://<EC2_PUBLIC_IP>:30080
+```
+
+Expected response:
+
+```
+HTTP/1.1 200 OK
+```
+
