@@ -1,220 +1,72 @@
-# Cloud-Native Security Monitoring Platform (Docker • Kubernetes • Terraform)
+# 🚀 Phase 3 – Infrastructure as Code (AWS + Terraform + K3s + ECR)
 
-## 📌 Project Overview
+## 📌 Overview
 
-This project builds a **small cloud-native security monitoring platform** that observes a web application, collects security-relevant events, and visualizes them in a dashboard — using modern DevSecOps tooling.
+In Phase 3, the Cloud-Native Security Monitoring Platform was migrated from a local Kubernetes environment to a fully provisioned AWS infrastructure using **Terraform**.
 
-The focus is **not** on building a complex application, but on **how the system is packaged, deployed, monitored, secured, and automated** using industry-standard technologies.
+This phase introduces:
 
-**Core technologies used:**
-- **Docker** – Package each component into containers  
-- **Kubernetes** – Run, scale, and manage the platform reliably  
-- **Terraform** – Provision the cloud infrastructure using Infrastructure-as-Code  
----
+- Infrastructure as Code (IaC)
+- Automated EC2 provisioning
+- K3s Kubernetes bootstrap via `user_data`
+- IAM-based authentication for Amazon ECR
+- Secure container image pulling without static credentials
+- Public application exposure via Kubernetes NodePort
 
-## 🎯 Project Goal
-
-To design and deploy a **mini security monitoring system** that can:
-
-- Observe application behavior (logins, failures, errors)
-- Centralize security-relevant logs
-- Visualize activity via dashboards
-- Detect suspicious patterns (e.g., brute-force attempts)
-- Run in a modern, automated, cloud-ready environment
-
-This project mirrors how **real-world SecOps / DevSecOps teams** build and operate monitoring platforms at a smaller scale.
+The result is a reproducible, production-style cloud deployment.
 
 ---
 
-## 🧠 Use Case
+## 🏗 Architecture
 
-Imagine a company with a web application where users log in.
+### Infrastructure Provisioned via Terraform
 
-They want to:
-- Detect suspicious login behavior  
-- Monitor errors that may signal vulnerabilities  
-- Centralize logs instead of checking servers manually  
-- View security trends visually  
-- Trigger alerts when something looks wrong  
+- VPC (`10.20.0.0/16`)
+- Public Subnet
+- Internet Gateway
+- Route Table + Association
+- Security Group (SSH restricted to developer IP)
+- EC2 Instance (Ubuntu 22.04)
+- IAM Role (ECR ReadOnly)
+- IAM Instance Profile attached to EC2
+- SSH Key Pair
 
-This project is a **mini version of a SIEM / security monitoring solution**:
+### Bootstrapped Automatically on EC2
 
-**Collect → Store → Visualize → Alert**
+- K3s Kubernetes
+- Containerd runtime
+- Systemd-managed control plane
 
----
+### Application Flow
 
-## 🏗️ Architecture (High Level)
-
-The platform consists of:
-
-- A **simple web application** that generates security events  
-- A **log collection pipeline**  
-- A **central log storage/search backend**  
-- A **dashboard** for visualization  
-- **Containerized services** orchestrated by Kubernetes  
-- **Cloud infrastructure** provisioned via Terraform  
+Browser → EC2 Public IP → NodePort (30080) → Kubernetes Service → Frontend Pods → ECR Image
 
 ---
 
-## 🛠️ Project Phases & Timeline
+## 🔐 Security Design
 
-This repository tracks progress through each phase.
+Phase 3 intentionally avoids static credentials.
 
----
+### IAM Best Practice Implementation
 
-### 🔹 Phase 0 — Security-Flavored Application
+- EC2 instance assumes IAM role:
+  `AmazonEC2ContainerRegistryReadOnly`
+- No AWS access keys stored on the server
+- Kubernetes pulls images from ECR using instance metadata credentials
+- SSH access restricted to `/32` CIDR
+- No hardcoded secrets inside Terraform
 
-**What is built:**
-- A simple web app (e.g., login page + API)
-- Logs:
-  - Successful logins
-  - Failed logins
-  - Repeated attempts (simulated suspicious behavior)
-
-**Why it matters:**
-- Generates realistic security events
-- Simulates a real company web portal
-- Provides data to monitor and detect threats
-
-**Status:** ✔️ Completed 
+This mirrors real-world cloud security practices.
 
 ---
 
-### 🔹 Phase 1 — Docker: Containerizing the Platform
+## 📦 ECR Integration
 
-**What is containerized:**
-- Web application
-- Log collector/shipper
-- Log storage/search backend
-- Visualization/dashboard service
+Frontend image stored in Amazon ECR:
 
-**Key ideas:**
-- Each component runs in its own container
-- Containers bundle code + dependencies
-- Portable, repeatable deployments
+`280934867410.dkr.ecr.us-east-1.amazonaws.com/secureworks-frontend:phase3`
 
-**What this demonstrates:**
-- Component-based architecture
-- Real-world containerization practices
+Deployment image reference:
 
-**Status:** ✔️ Completed 
-
----
-
-### 🔹 Phase 2 — Kubernetes: Running It Like Production
-
-**What Kubernetes handles:**
-- Deploying and managing containers
-- Restarting failed services
-- Scaling components
-- Service-to-service communication
-- Traffic routing
-
-**Security-focused concepts introduced:**
-- Separating public vs internal services
-- Using Kubernetes Secrets for sensitive values
-- Basic network isolation between components
-
-**What this demonstrates:**
-- Operating a multi-service platform
-- Production-style deployment patterns
-- Foundational Kubernetes security awareness
-
-**Status:** ✔️ Completed
-
----
-
-### 🔹 Phase 3 — Terraform: Infrastructure-as-Code
-
-**What Terraform provisions:**
-- Cloud virtual network
-- Kubernetes cluster
-- Storage for logs
-- Access and security rules
-
-**Key ideas:**
-- No manual cloud console setup
-- Entire environment defined as code
-- Easy to recreate, audit, and version
-
-**Why this matters:**
-- Critical for security, compliance, and scalability
-- Industry standard for cloud infrastructure
-
-**What this demonstrates:**
-- Infrastructure-as-Code skills
-- Cloud-native security mindset
-
-**Status:** 🟡 In Progress
-
----
-
-### 🔹 Phase 4 — Security & Observability (SecOps Focus)
-
-**Security capabilities added:**
-- Centralized log ingestion
-- Dashboards showing:
-  - Failed login attempts
-  - Top offending IPs
-  - Error spikes
-- Alerting rules (example):
-  - Too many failed logins from one IP in X minutes
-
-**Optional enhancements:**
-- Container image vulnerability scanning
-- TLS/HTTPS for services
-- Role-based access control
-- Least-privilege access patterns
-
-**What this demonstrates:**
-- Security operations thinking
-- Detection & monitoring fundamentals
-- Cloud-native observability skills
-
-**Status:** ⬜ Not Started
-
----
-
-## 📊 Progress Tracking
-
-| Phase | Description | Status |
-|------|------------|--------|
-| Phase 0 | Security app | ✔️ |
-| Phase 1 | Docker containerization | ✔️ |
-| Phase 2 | Kubernetes deployment | ✔️ |
-| Phase 3 | Terraform infrastructure | 🟡 |
-| Phase 4 | Security & observability | ⬜ |
-
----
-
-## 🎓 Skills Demonstrated
-
-- Docker & containerization
-- Kubernetes orchestration
-- Terraform & Infrastructure-as-Code
-- Cloud-native security concepts
-- Log aggregation & monitoring
-- Security event detection
-- DevSecOps mindset
-
----
-
-## 🚀 Why This Project Matters
-
-This repository demonstrates **how modern security platforms are built and operated**, not just how applications are coded.
-
-It shows:
-- Real-world tooling
-- Production-style architecture
-- Security thinking embedded from the start
-- Clear progression from local development → cloud deployment
-
----
-
-## 📌 Status
-
-🟡 **Project in progress**  
-This README will be updated as each phase is completed.
-
----
-
+```yaml
+image: 280934867410.dkr.ecr.us-east-1.amazonaws.com/secureworks-frontend:phase3
