@@ -70,8 +70,8 @@ Deployment image reference:
 
 ```yaml
 image: 280934867410.dkr.ecr.us-east-1.amazonaws.com/secureworks-frontend:phase3
+```
 
----
 ## ⚙️ Deployment Steps
 
 ### 1️⃣ Provision Infrastructure
