@@ -12,17 +12,7 @@ This phase demonstrates how modern **cloud-native security monitoring pipelines*
 
 # Architecture
 
-Traffic Generator (Kubernetes Job)
-↓
-SecureWorks Web Application
-↓
-Application JSON Logs
-↓
-Grafana Alloy (Log Collector)
-↓
-Loki (Centralized Log Storage)
-↓
-Grafana (Visualization + Alerting)
+Traffic Generator (Kubernetes Job) -> SecureWorks Web Application -> Application JSON Logs -> Grafana Alloy (Log Collector) -> Loki (Centralized Log Storage) -> Grafana (Visualization + Alerting)
 
 ---
 
